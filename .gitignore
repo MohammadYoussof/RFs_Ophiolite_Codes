@@ -1,0 +1,23 @@
+# data and results are not part of the repository
+raw_sac/
+raw_mseed/
+data_test/
+qc_out*/
+qc_test*/
+demo_output/
+stations*.xml
+originals_sha256.txt*
+*.nc
+
+# SOD
+SodDb/
+*.log
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.ipynb_checkpoints/
+
+# system
+.DS_Store

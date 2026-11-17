@@ -1,0 +1,15 @@
+name: rfs_ophiolite
+channels:
+  - conda-forge
+dependencies:
+  - python>=3.9
+  - numpy
+  - scipy
+  - pandas
+  - matplotlib
+  - obspy>=1.3
+  - netcdf4
+  - pytest
+  - pip
+  - pip:
+      - global-land-mask

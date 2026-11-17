@@ -1,0 +1,10 @@
+numpy
+scipy
+pandas
+matplotlib
+obspy>=1.3
+
+# optional
+# netCDF4             3-D shear-velocity model in the crustal correction (--orla)
+# global-land-mask    coastline on the CCP depth slices
+# pytest              to run tests/ with pytest

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  SOD test recipe: one event at two stations of the COOL network (5H), northern Oman
+
+  Data center : GEOFON (GFZ Potsdam), open access, no credentials needed
+  Event       : 2015-05-30 Bonin Islands deep earthquake, magnitude 7.8 (USGS catalog)
+  Stations    : 5H.COO02 (STS-2) and 5H.COO16 (Trillium-120)
+  Channels    : HHZ, HHN, HHE at 100 samples per second; the location code is empty
+  Distance    : about 72 to 80 degrees from northern Oman
+  Output      : raw_mseed/ and raw_sac/, files named like 5H2013.COO02..HHZ.sac
+
+  Run it       : sod -f cool_5H_test.xml       (a few minutes)
+  Then check   : python verify_download.py
+-->
+<sod>
+
+  <properties>
+    <runName>5H COOL test - Bonin 2015 at COO02 and COO16</runName>
+    <waveformWorkerThreads>2</waveformWorkerThreads>
+  </properties>
+
+
+  <eventArm>
+
+    <fdsnEvent>
+      <host>earthquake.usgs.gov</host>
+      <scheme>https</scheme>
+
+      <originTimeRange>
+        <startTime>
+          <year>2015</year>
+          <month>5</month>
+          <day>30</day>
+        </startTime>
+
+        <endTime>
+          <year>2015</year>
+          <month>5</month>
+          <day>31</day>
+        </endTime>
+      </originTimeRange>
+
+      <magnitudeRange>
+        <min>7.5</min>
+      </magnitudeRange>
+
+    </fdsnEvent>
+
+    <printlineEventProcess/>
+
+  </eventArm>
+
+
+  <networkArm>
+
+    <fdsnStation>
+      <host>geofon.gfz.de</host>
+      <scheme>https</scheme>
+
+      <!-- Availability information is not requested from the data center -->
+      <includeAvailability>false</includeAvailability>
+
+      <!-- 5H is a temporary code reused by other deployments; SOD keeps only the
+           2013-2016 epoch because the event time range falls inside it -->
+      <networkCode>5H</networkCode>
+      <stationCode>COO02</stationCode>
+      <stationCode>COO16</stationCode>
+      <channelCode>HH?</channelCode>
+
+    </fdsnStation>
+
+    <printlineChannelProcess/>
+
+  </networkArm>
+
+
+  <waveformArm>
+
+    <distanceRange>
+      <unit>DEGREE</unit>
+      <min>30</min>
+      <max>95</max>
+    </distanceRange>
+
+
+    <phaseRequest>
+
+      <model>prem</model>
+
+      <beginPhase>ttp</beginPhase>
+
+      <beginOffset>
+        <unit>SECOND</unit>
+        <value>-120</value>
+      </beginOffset>
+
+      <endPhase>tts</endPhase>
+
+      <endOffset>
+        <unit>SECOND</unit>
+        <value>360</value>
+      </endOffset>
+
+    </phaseRequest>
+
+
+    <fdsnDataSelect>
+      <host>geofon.gfz.de</host>
+      <scheme>https</scheme>
+    </fdsnDataSelect>
+
+
+    <printlineSeismogramProcess/>
+
+
+    <mseedWriter>
+      <workingDir>raw_mseed</workingDir>
+    </mseedWriter>
+
+
+    <sacWriter>
+      <workingDir>raw_sac</workingDir>
+    </sacWriter>
+
+  </waveformArm>
+
+</sod>

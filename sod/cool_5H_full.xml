@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  SOD recipe: teleseismic data of the COOL network (5H, 2013 to 2016), northern Oman
+  COOL = Crust of the Oman Ophiolite and its Lithosphere
+
+  Data center : GEOFON (GFZ Potsdam), open access, no credentials needed
+  Deployment  : 49 stations (COO01 to COO47, COO51, COO53), 2013-10-31 to 2016-02-15,
+                about 22 to 25 N, 56 to 60 E; most stations ran only part of this period
+  Channels    : HHZ, HHN, HHE at 100 samples per second; the location code is empty
+  Events      : USGS catalog, magnitude 5.5 and larger, 30 to 95 degrees from each station
+  Window      : 120 s before P to 360 s after S (PREM travel times)
+  Output      : raw_mseed/ and raw_sac/, one folder per event,
+                files named like 5H2013.COO12..HHZ.sac
+
+  To adapt it  : magnitude and time range (eventArm), network and stations (networkArm),
+                distance range and time window (waveformArm). See README.md in this folder.
+  Check it     : sod -V -f cool_5H_full.xml
+  Run it       : sod -f cool_5H_full.xml       (run cool_5H_test.xml first)
+-->
+<sod>
+
+  <properties>
+    <runName>5H COOL 2013-2016 teleseismic</runName>
+    <waveformWorkerThreads>2</waveformWorkerThreads>
+  </properties>
+
+
+  <eventArm>
+
+    <fdsnEvent>
+      <host>earthquake.usgs.gov</host>
+      <scheme>https</scheme>
+
+      <!-- Whole 5H deployment: first station 2013-10-31, last station 2016-02-15 -->
+      <originTimeRange>
+        <startTime>
+          <year>2013</year>
+          <month>10</month>
+          <day>31</day>
+        </startTime>
+
+        <endTime>
+          <year>2016</year>
+          <month>2</month>
+          <day>15</day>
+        </endTime>
+      </originTimeRange>
+
+      <!-- 5.5 suits receiver functions; use 6.0 or higher to cut the volume (e.g. for SKS) -->
+      <magnitudeRange>
+        <min>5.5</min>
+      </magnitudeRange>
+
+    </fdsnEvent>
+
+    <printlineEventProcess/>
+
+  </eventArm>
+
+
+  <networkArm>
+
+    <fdsnStation>
+      <host>geofon.gfz.de</host>
+      <scheme>https</scheme>
+
+      <!-- Availability information is not requested from the data center -->
+      <includeAvailability>false</includeAvailability>
+
+      <!-- All 5H stations. To restrict, add lines such as <stationCode>COO12</stationCode> -->
+      <networkCode>5H</networkCode>
+      <channelCode>HH?</channelCode>
+
+    </fdsnStation>
+
+    <printlineChannelProcess/>
+
+  </networkArm>
+
+
+  <waveformArm>
+
+    <distanceRange>
+      <unit>DEGREE</unit>
+      <min>30</min>
+      <max>95</max>
+    </distanceRange>
+
+
+    <phaseRequest>
+
+      <model>prem</model>
+
+      <beginPhase>ttp</beginPhase>
+
+      <beginOffset>
+        <unit>SECOND</unit>
+        <value>-120</value>
+      </beginOffset>
+
+      <endPhase>tts</endPhase>
+
+      <endOffset>
+        <unit>SECOND</unit>
+        <value>360</value>
+      </endOffset>
+
+    </phaseRequest>
+
+
+    <fdsnDataSelect>
+      <host>geofon.gfz.de</host>
+      <scheme>https</scheme>
+    </fdsnDataSelect>
+
+
+    <printlineSeismogramProcess/>
+
+
+    <mseedWriter>
+      <workingDir>raw_mseed</workingDir>
+    </mseedWriter>
+
+
+    <sacWriter>
+      <workingDir>raw_sac</workingDir>
+    </sacWriter>
+
+  </waveformArm>
+
+</sod>
